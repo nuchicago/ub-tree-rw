@@ -22,24 +22,32 @@ Steps
 
    For example:
 
+    ```
     lar -c run_eventweight_microboone.fcl /pnfs/uboone/mc/uboone/detector-simulated/prodgenie_bnb_nu_uboone/sim/prod_v06_26_00/prodgenie_bnb_nu_uboone_0_20170228T015121_gen2_0aa93a49-868a-41dd-a795-e3ef4643f5b9.root
     mv <that output> mcc8_test.root
+    ```
 
 2. Turn that into an analysis tree with `TestModule`.
 
    Place `TestModule` into the uboonecode source, add it to the CMakeLists,
    and rebuild uboonecode. Then:
 
+    ```
     lar -c run_test_module.fcl mcc8_test.root
+    ```
 
 3. Read the tree back in and re-run eventweight (same seeds).
 
+    ````
     lar -c test_treereader.fcl testOutput.root
+    ```
 
 4. Check that all the weights match.
 
+    ```
     make  # Build the test program
     ./check_weights mcc8_test.root treereader.root
+    ```
 
    if any weights mismatch, it will print an error and abort immediately.
 
