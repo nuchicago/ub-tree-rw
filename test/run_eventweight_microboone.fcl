@@ -1,0 +1,54 @@
+#include "services_microboone.fcl"
+#include "seedservice_microboone.fcl"
+#include "eventweight_microboone.fcl"
+
+process_name: MCWeight
+
+services: {
+  TimeTracker: {}
+  MemoryTracker: {}
+  RandomNumberGenerator: {}
+  FileCatalogMetadata: @local::art_file_catalog_mc
+  NuRandomService: @local::microboone_seedservice
+}
+
+source: {
+  module_type: RootInput
+}
+
+physics: {
+ producers: {
+   mcweight:  @local::microboone_eventweight
+   rns: {
+     module_type: "RandomNumberSaver"
+   }
+ }
+ 
+ simulate: [ rns, mcweight ]
+ stream1: [ out1 ]
+ trigger_paths: [ simulate ]
+ end_paths: [ stream1 ]
+}
+
+outputs: {
+ out1: {
+   module_type: RootOutput
+   fileName: "%ifb_%tc_eventweight.root"
+   dataTier: "detector-simulated"
+   compressionLevel: 1
+ }
+}
+
+physics.producers.mcweight.weight_functions: [
+  @sequence::microboone_eventweight.weight_functions_beam,
+  @sequence::microboone_eventweight.weight_functions_genie
+]
+
+source.inputCommands: [
+  "keep *",
+  "drop *_*_*_Detsim",
+  "drop sim::SimChannels_largeant_*_G4",
+  "drop sim::AuxDetSimChannels_largeant_*_G4",
+  "drop sim::SimPhotonss_largeant_*_G4"
+]
+
