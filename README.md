@@ -38,7 +38,7 @@ Steps
 
 3. Read the tree back in and re-run eventweight (same seeds).
 
-    ````
+    ```
     lar -c test_treereader.fcl testOutput.root
     ```
 
