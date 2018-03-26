@@ -26,8 +26,13 @@ LDFLAGS=$$(root-config --libs) \
 
 UNAME := $(shell uname -s)
 
-EXEC=check_weights
+all: check_weights arborist
 
-$(EXEC): test.cc
+check_weights: check_weights.cc
 	 @echo Building $(EXEC)
 	 @$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@ $^
+
+arborist: arborist.cpp
+	 @echo Building $(EXEC)
+	 @$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@ $^
+

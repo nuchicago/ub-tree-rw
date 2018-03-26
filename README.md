@@ -13,7 +13,9 @@ adjusted to your preferences (the mapping is specified when the analysis trees
 are read back in for reweighting), to minimize need to duplicate information
 and/or adapt existing analysis code.
 
-N.B. This code assumes uboonecode `v06_26_01_12`.
+N.B. This code assumes uboonecode `v06_26_01_12` and
+gallery `v1_03_13 -q e10:prof:nu`. Adjust `UBOONECODE_LIB` in the Makefile
+for your environment.
 
 Steps
 -----
@@ -50,4 +52,17 @@ Steps
     ```
 
    if any weights mismatch, it will print an error and abort immediately.
+
+Converting art ROOT output to an Ntuple
+---------------------------------------
+The output of the tree reader input source (step 3) is an art ROOT file. A
+script to extract the event index, neutrino energy, and event weights and
+put them in a standalone ROOT ntuple is provided in test. Usage:
+
+    make
+    ./arborist output.root input1.root [input2.root ...]
+
+This will read all the events from the input file(s), and create one file
+called output.root with just the event ID, Enu, and
+`std::map<std::string, std::vector<double> >` with the weights.
 
